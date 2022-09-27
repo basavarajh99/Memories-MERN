@@ -12,10 +12,8 @@ const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const handleDelete = () => {
-    dispatch(deletePost(post._id));
-    window.location.reload();
-  }
+  
+    
 
   return (
     <Card className={classes.card}>
@@ -44,7 +42,7 @@ const Post = ({ post, setCurrentId }) => {
             &nbsp; Like &nbsp;
             {post.likeCount}
           </Button>
-          <Button size='small' color='primary' onClick={handleDelete}>
+          <Button size='small' color='primary' onClick={() => dispatch(deletePost(post._id))}>
             <DeleteIcon fontSize='small' />
               Delete
           </Button>

@@ -21,7 +21,6 @@ const Form = ({currentId, setCurrentId}) => {
 
     if (currentId === 0) {
       dispatch(createPost(postData));
-      window.location.reload();
     } else {
       dispatch(updatePost(currentId, postData));
     }
