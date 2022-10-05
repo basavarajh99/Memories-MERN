@@ -7,15 +7,18 @@ import { GoogleLogin } from 'react-google-login';
 import Icon from "./Icon";
 import { useDispatch } from 'react-redux';
 import { gapi } from "gapi-script";
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { signup, signin } from '../../actions/auth';
+
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }
 
 const Auth = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [formData, setFormData] = useState(initialState);
   const history = useHistory();
-  const location = useLocation();
 
   useEffect(() => {
     function start() {
@@ -28,12 +31,18 @@ const Auth = () => {
     gapi.load('client:auth2', start);
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    if(isSignUp){
+      dispatch(signup(formData, history));
+    } else{
+      dispatch(signin(formData, history));
+    }
   }
 
-  const handleChange = () => {
-
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
@@ -41,7 +50,7 @@ const Auth = () => {
 
   const switchMode = () => {
     setIsSignUp((prevIsSignUp) => !prevIsSignUp)
-    handleShowPassword(false)
+    setShowPassword(false)
   }
 
   const googleSuccess = async (res) => {
@@ -77,7 +86,7 @@ const Auth = () => {
               isSignUp && (
                 <>
                   <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half />
-                  <Input name="firstName" label="First Name" handleChange={handleChange} half />
+                  <Input name="lastName" label="Last Name" handleChange={handleChange} half />
                 </>
               )
             }
@@ -89,7 +98,7 @@ const Auth = () => {
             {isSignUp ? 'Sign Up' : 'Sign In'}
           </Button>
             <GoogleLogin 
-              clientId="941163782763-te4no41iholeqgbiv94esl1oipt12a30.apps.googleusercontent.com"
+              clientId="301841449276-rnpcp1f7rpc97lkmjm6m7e4untqesprk.apps.googleusercontent.com"
               render = {(renderProps) => (
                 <Button 
                   className={classes.googleButton} 
