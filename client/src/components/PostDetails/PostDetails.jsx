@@ -39,7 +39,7 @@ const PostDetails = () => {
   const openPost = (_id) => {
     history.push(`/posts/${_id}`)
     window.location.reload();
-  };
+  }
 
   return (
     <Paper style={{ padding: '20px', borderRadius: '15px' }} elevation={6}>

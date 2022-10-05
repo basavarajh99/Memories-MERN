@@ -16,10 +16,6 @@ const Paginate = ({ page }) => {
     }
   }, [dispatch, page]);
 
-  const handleClick = () => {
-    window.location.reload();
-  }
-
   return (
     <Pagination
       classes={{ ul: classes.ul }}
@@ -27,10 +23,10 @@ const Paginate = ({ page }) => {
       page={Number(page) || 1}
       variant="outlined"
       color="primary"
-      onClick={handleClick}
       renderItem={(item) => (
         <PaginationItem {...item} component={Link} to={`/posts?page=${item.page}`} />
       )}
+      onClick={() => window.location.reload()}
     />
   );
 };
