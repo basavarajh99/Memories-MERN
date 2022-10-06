@@ -1,4 +1,4 @@
-import React, { useId, useState } from 'react'
+import React, { useState } from 'react'
 import useStyles from  './styles'
 import { Card, CardActions, CardContent, CardMedia, Button, ButtonBase, Typography } from '@material-ui/core'; 
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
@@ -46,7 +46,6 @@ const Post = ({ post, setCurrentId }) => {
     
   const openPost = () => {
     history.push(`/posts/${post._id}`);
-    window.location.reload();
   };
 
 

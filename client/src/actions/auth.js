@@ -9,7 +9,6 @@ export const signin =  (formData, history) => async (dispatch) => {
         dispatch({type: AUTH, data});
 
         history.push('/')
-        window.location.reload();
 
     } catch (error) {
         console.log(error);

@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import PagiNation from "../Pagination";
-import { getPosts, getPostsBySearch } from "../../actions/posts";
+import { getPostsBySearch } from "../../actions/posts";
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
 import { useHistory, useLocation } from "react-router-dom";

@@ -60,7 +60,6 @@ const Auth = () => {
       dispatch({ type: 'AUTH', data: {result, token} })
 
       history.push('/')
-      window.location.reload();
 
     } catch (error) {
         console.log(error);

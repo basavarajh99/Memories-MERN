@@ -26,7 +26,6 @@ const Paginate = ({ page }) => {
       renderItem={(item) => (
         <PaginationItem {...item} component={Link} to={`/posts?page=${item.page}`} />
       )}
-      onClick={() => window.location.reload()}
     />
   );
 };

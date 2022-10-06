@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core'
-import memories from '../../images/memories.png';
 import memoriesLogo from '../../images/memoriesLogo.png';
 import memoriesText from '../../images/memoriesText.png';
 import useStyles from './styles';
@@ -35,15 +34,14 @@ const Navbar = () => {
         history.push('/');
 
         setUser(null);
-        window.location.reload();
      }
 
 
     return (
     <AppBar className={classes.appBar} position='static' color='inherit'>
         <div className={classes.brandContainer}>
-          <img src={memoriesText} style={{cursor: "pointer"}} onClick={() => window.location.pathname='/'} alt='icon' height='45px'  />
-          <img className={classes.image} style={{cursor: "pointer"}} onClick={() => window.location.pathname='/'} src={memoriesLogo} alt="icon" height="40px" />
+          <img src={memoriesText} style={{cursor: "pointer"}} onClick={() => history.push('/')} alt='icon' height='45px'  />
+          <img className={classes.image} style={{cursor: "pointer"}} onClick={() => history.push('/')} src={memoriesLogo} alt="icon" height="40px" />
         </div>
         <Toolbar className={classes.toolbar}>
             {
@@ -54,7 +52,7 @@ const Navbar = () => {
                         <Button variant='contained' className={classes.logout} color='secondary' onClick={logout} >Logout</Button>
                     </div>
                 ) : (
-                    <Button component={Link} to={'/auth'} variant="contained" color='primary' onClick={() => window.location.pathname='/auth'} >Sign in</Button>
+                    <Button component={Link} to={'/auth'} variant="contained" color='primary'>Sign in</Button>
                 )
             }
         </Toolbar>
