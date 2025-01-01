@@ -22,7 +22,7 @@ const Comments = ({ post }) => {
     setComments(newComments);
     setComment('');
 
-    commentsRef.current.scrollIntoView({ behavior: 'smooth' });
+    //commentsRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -32,7 +32,7 @@ const Comments = ({ post }) => {
           <Typography gutterBottom variant="h6">
             Comments
           </Typography>
-          {comments.map((c, i) => (
+          {comments.slice().reverse().map((c, i) => (
             <Typography key={i} gutterBottom variant="subtitle1">
               <strong>{c.split(': ')[0]}</strong>
               {c.split(':')[1]} 

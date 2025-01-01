@@ -4,7 +4,8 @@ export default makeStyles((theme) => ({
   media: {
     borderRadius: '20px',
     objectFit: 'cover',
-    width: '600px',
+    width: '100%',
+    maxWidth: '600px',
     maxHeight: '400px',
     marginTop: '20px'
   },
@@ -25,6 +26,9 @@ export default makeStyles((theme) => ({
     marginLeft: '20px',
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
+      width: '100%',  
+      maxWidth: '100%', 
+      height: 'auto', 
     },
   },
   recommendedPosts: {

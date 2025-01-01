@@ -55,6 +55,16 @@ const Post = () => {
           <Typography variant="h3" component="h2">
             {post.title}
           </Typography>
+        <div className={classes.imageSection}>
+          <img
+            className={classes.media}
+            src={
+              post.selectedFile ||
+              "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
+            }
+            alt={post.title}
+          />
+        </div>
           <Typography
             gutterBottom
             variant="h6"
@@ -74,16 +84,6 @@ const Post = () => {
           <Comments post={post} />
           <Divider style={{ margin: "20px 0" }} />
         </div>
-        <div className={classes.imageSection}>
-          <img
-            className={classes.media}
-            src={
-              post.selectedFile ||
-              "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
-            }
-            alt={post.title}
-          />
-        </div>
       </div>
       {recommendedPosts.length && (
         <div className={classes.section} style={{ overflow: "scroll hidden" }}>
@@ -98,7 +98,8 @@ const Post = () => {
                   style={{ margin: "20px", cursor: "pointer" }}
                   onClick={() => openPost(_id)}
                   key={_id}
-                >
+                  >
+                  <img src={selectedFile} width="200px" alt="" />
                   <Typography gutterBottom variant="h6">
                     {title}
                   </Typography>
@@ -111,7 +112,6 @@ const Post = () => {
                   <Typography gutterBottom variant="subtitle1">
                     Likes: {likes.length}
                   </Typography>
-                  <img src={selectedFile} width="200px" alt="" />
                 </div>
               )
             )}
