@@ -1,14 +1,13 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://ur-memories.herokuapp.com/" });
+const API = axios.create({ baseURL: "https://memories-4clv.onrender.com/" });
 
 // const url = 'https://fs-memories-project.herokuapp.com/posts'
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {
-    req.headers.authorization = `Bearer ${
-      JSON.parse(localStorage.getItem("profile")).token
-    }`;
+    req.headers.authorization = `Bearer ${JSON.parse(localStorage.getItem("profile")).token
+      }`;
   }
 
   return req;
