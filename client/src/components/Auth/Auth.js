@@ -62,6 +62,7 @@ const Auth = () => {
       history.push('/')
 
     } catch (error) {
+        window.alert("Google SignIn Failed");
         console.log(error);
     }
     
