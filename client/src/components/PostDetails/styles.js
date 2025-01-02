@@ -1,13 +1,22 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
+
+  title: {
+    fontSize: '50px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '30px',
+    },
+  },
+
   media: {
     borderRadius: '20px',
     objectFit: 'cover',
     width: '100%',
     maxWidth: '600px',
     maxHeight: '400px',
-    marginTop: '20px'
+    marginTop: '20px',
+    height: 'auto',
   },
   card: {
     display: 'flex',
@@ -23,12 +32,9 @@ export default makeStyles((theme) => ({
     flex: 1,
   },
   imageSection: {
-    marginLeft: '20px',
+    marginLeft: '10px',
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
-      width: '100%',  
-      maxWidth: '100%', 
-      height: 'auto', 
     },
   },
   recommendedPosts: {
