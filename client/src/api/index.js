@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://memories-mern-giqr.onrender.com" });
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
-// const url = 'https://fs-memories-project.herokuapp.com/posts'
+//https://memories-mern-giqr.onrender.com
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {
@@ -33,6 +33,6 @@ export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
 
 export const comment = (value, id) => API.post(`/posts/${id}/commentPost`, { value });
 
-export const signIn = (FormData) => API.post("/user/signin", FormData);
+export const signIn = (formData) => API.post("/user/signin", formData);
 
-export const signUp = (FormData) => API.post("/user/signup", FormData);
+export const signUp = (formData) => API.post("/user/signup", formData);
