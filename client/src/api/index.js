@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://memories-mern-ymau.onrender.com" });
+const API = axios.create({ baseURL: "https://memories-mern-giqr.onrender.com" });
 
 // const url = 'https://fs-memories-project.herokuapp.com/posts'
 
