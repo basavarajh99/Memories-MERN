@@ -1,5 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 
+/*
+  Here makeStyles() is a callback function that uses another function having theme as parameter
+   
+*/
+
 export default makeStyles((theme) => ({
   appBar: {
     borderRadius: 15,

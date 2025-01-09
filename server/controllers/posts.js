@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 import PostMessage from "../models/postMessage.js";
 
+/*
+    The following function uses 'async' keyword before a function declaration allows the function to use 'await' 
+    within its body. This makes the function asynchronous, meaning it will pause execution at each 'await' 
+    statement until the awaited Promise resolves or rejects.
+*/
+
 export const getPosts = async  (req, res) => {
     const { page } = req.query;
     try {
@@ -9,6 +15,15 @@ export const getPosts = async  (req, res) => {
         const startIndex = (Number(page) - 1) * LIMIT; //get start index of every page
         const total = await PostMessage.countDocuments({});
         const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+
+        /*
+            By using await, the code pauses at these lines until the Promises resolve, and then it proceeds 
+            with the resolved values (total and posts).
+
+            Without async/await, you would typically use '.then()' to handle Promises, 
+            resulting in nested or chained callbacks. async/await makes the code more readable and resembles 
+            synchronous flow.
+        */
 
         res.status(200).json({ data: posts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });
     } catch(error) {
@@ -40,10 +55,14 @@ export const getPostsBySearch = async (req, res) => {
 
 export const createPost = async (req, res) => {
     const post = req.body;
+    /*
+        The values are received from the front-end form for creating the posts which is inside Form.js of Form
+        component of client module
+    */
     const newPost = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() });
     try {
         await newPost.save();
-
+        
         res.status(201).json(newPost);
     } catch(error) {
         res.status(409).json({message: error.message});
@@ -51,10 +70,14 @@ export const createPost = async (req, res) => {
 }
 
 export const updatePost = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params; //id is sent inside route './:id'
     const { title, message, creator, selectedFile, tags } = req.body;
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
 
+    //req.body contains the payload sent by user from front side
+    //req.params contains URL route parameters
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+    /* checking if the 'id' is really a mongoose object id */
+    
     const updatedPost = { creator, title, message, tags, selectedFile, _id: id };
     await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true });
     res.json(updatedPost);
@@ -73,18 +96,35 @@ export const deletePost = async (req, res) => {
 export const likePost = async (req, res) => {
     const { id } = req.params;
     
+    /*
+        It's possible only because we are using middleware before liking a post which is populating req.userId
+        and making it available in here. 
+    */
     if(!req.userId) return res.json({message: 'Unauthenticated'});
 
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
 
-    const post = await PostMessage.findById(id);
+    const post = await PostMessage.findById(id); //checking if the post is available that user wants to like
 
     const index = post.likes.findIndex((id) => id ===String(req.userId));
-
+    /*
+        checking if the userId is already in the like section or not. Each like is going to be a unique id
+        posted from a specific person, that's how we differentiate likes from different users. 
+    */
     if (index === -1) {
+        //It means that this is the 1st like of the current loggedIn user hence store it in likes array
         post.likes.push(req.userId);
     } else{
+        /*
+            it means that current loggedIn user has already liked the post and if he is trying to like the post
+            remove the his like from likes array by filtering it out using "Id" which represents a specific 
+            like. 
+        */
       post.likes = post.likes.filter((id) => id !== String(req.userId));
+        /*
+            filter() gives all the likes except the one that current loggedIn user has posted and that's how 
+            his like is removed.
+        */
     }
 
     const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {new: true});

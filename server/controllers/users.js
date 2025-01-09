@@ -5,7 +5,7 @@ import User from '../models/user.js'
 const secret = 'test';
 
 export const signin = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password } = req.body; //got the email and password from post request from client side
 
     try {
         
@@ -29,6 +29,7 @@ export const signin = async (req, res) => {
 export const signup = async (req, res) => {
 
     const { email, password, firstName, lastName, confirmPassword } = req.body;
+    //got the email, password, firstName, lastName, confirmPassword from post request from client side
 
     try {
         
@@ -38,11 +39,12 @@ export const signup = async (req, res) => {
 
         if(password !== confirmPassword) return res.status(400).json({ message: "Password mismatch." });
 
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = await bcrypt.hash(password, 12); //12 is salt value of hashed password
 
         const result = await User.create({ email, password: hashedPassword, name: `${firstName} ${lastName}` });
 
         const token = jwt.sign({ email: result.email, id: result._id }, secret, { expiresIn: "1h" });
+       
         return res.status(200).json({result, token});
         
     } catch (error) {

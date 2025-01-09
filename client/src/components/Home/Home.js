@@ -1,16 +1,8 @@
-import React, { useState } from "react";
-import {
-  Container,
-  Grow,
-  Grid,
-  Paper,
-  AppBar,
-  TextField,
-  Button,
-} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Container, Grow, Grid, Paper, AppBar, TextField, Button,} from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import PagiNation from "../Pagination";
-import { getPostsBySearch } from "../../actions/posts";
+import { getPosts, getPostsBySearch } from "../../actions/posts";
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
 import { useHistory, useLocation } from "react-router-dom";
@@ -27,12 +19,17 @@ const Home = () => {
   const query = useQuery();
   const history = useHistory();
   const [currentId, setCurrentId] = useState(0);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); //useDispatch hook gives us the store's dispatch method to dispatch actions.
   const page = query.get("page") || 1;
   const searchQuery = query.get("searchQuery");
   const classes = useStyles();
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
+
+  useEffect(() =>{
+    dispatch(getPosts());
+  }, [currentId, dispatch]);
+
 
   const searchPost = () => {
     if(search.trim() || tags){
@@ -66,6 +63,7 @@ const Home = () => {
         >
           <Grid item xs={12} sm={6} md={9}>
             <Posts setCurrentId={setCurrentId} />
+            {/*Sending the currentId and setCurrentId from parent component <Home/> to child component <Posts/>*/}
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <AppBar
@@ -90,9 +88,16 @@ const Home = () => {
                 label="Search Tags"
                 variant="outlined"
               />
-              <Button onClick={searchPost} variant="contained" className={classes.searchButton} color="primary">Search</Button>
+              <Button onClick={searchPost} variant="contained" 
+                className={classes.searchButton} color="primary">
+                Search</Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
+            {/* 
+              Sending the currentId and setCurrentId from parent component <Home /> to child component <Form />. 
+              To avoid this repeating task of passing props from parent to children we use Redux which 
+              has global redux store that can be accessed in the entire application.  
+            */}
             {(!searchQuery && !tags.length) && (
               <Paper elevation={6} className={classes.pagination} >
                 <PagiNation page={page} />

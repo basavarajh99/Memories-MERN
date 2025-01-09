@@ -21,7 +21,8 @@ const postSchema = mongoose.Schema({
     }
 });
 
+/*converts schema to model on which different quries like find, delete, search can be done*/
 
-const PostMessage = mongoose.model('PostMessage', postSchema);
+const PostMessage = mongoose.model('PostMessage', postSchema); 
 
 export default PostMessage;

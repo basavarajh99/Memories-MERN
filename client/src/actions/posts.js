@@ -1,12 +1,30 @@
 import * as api from '../api'
-import { FETCH_ALL, COMMENT, FETCH_POST, START_LOADING, END_LOADING, FETCH_BY_SEARCH, CREATE, UPDATE, LIKE, DELETE } from '../constants/actionTypes';
-//ACTION CREATORS
+import { FETCH_ALL, COMMENT, FETCH_POST, START_LOADING, END_LOADING, FETCH_BY_SEARCH, CREATE, UPDATE,
+    LIKE, DELETE } from '../constants/actionTypes';
+
+    /*
+        ACTION CREATORS: It is another common convention that, instead of creating action objects inline in the
+        places where you dispatch the actions, you would create functions generating them. 
+                                            or
+        We can simply say it as "function returning an action"
+
+        'type:' inside each action gets its value which is a string from actionType specified inside constants 
+         module so that we don't make any errors while specifying those strings, if we make any errors while
+         specifying those strings then we can't find those errors in console hence it becomes difficult to 
+         debug the error hence we specify them inside constants module.
+
+        With redux thunk since we will be dealing with asynch logic we are adding asynch(dispatch) to dispatch
+        the action
+    */
 
 export const getPost = (id) => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING })
         const { data } = await api.fetchPost(id);
-
+        /*
+            here we are getting response from the api and response has data object which we are destructuring
+            data actually represents the post, and we are dispatching it using redux dispatch().
+        */
         //console.log(data);
 
         dispatch({ type: FETCH_POST, payload: data });

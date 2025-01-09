@@ -12,6 +12,7 @@ export default makeStyles({
   },
   fullHeightCard: {
     height: '100%',
+    width: '100%',
   },
   card: {
     display: 'flex',
@@ -40,6 +41,7 @@ export default makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     margin: '20px',
+    textOverflow: "ellipsis"
   },
   title: {
     padding: '0 16px',

@@ -10,7 +10,7 @@ const App = () => {
   const user = JSON.parse(localStorage.getItem('profile'));
   return (
     <BrowserRouter>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg"> {/* The container centers your content horizontally */}
         <Navbar />
         <Switch>
           <Route path='/' exact component={() => <Redirect to="/posts" />} />
@@ -23,5 +23,9 @@ const App = () => {
     </BrowserRouter>
   )
 }
+
+/*
+  We can achieve navigation in react app using react-router-dom
+*/
 
 export default App
