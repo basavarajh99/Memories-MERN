@@ -57,6 +57,8 @@ const Post = ({ post, setCurrentId }) => { {/* getting both the props from Posts
             <Typography variant='body2'>{moment(post.createdAt).fromNow()}</Typography> 
               {/* Moment is used to show when the post was created like '5min ago' */}
           </div>
+          
+          {/* show the update button only if the post is created by the current logged-In user */}
           {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
             <div className={classes.overlay2}>
               <Button style={{color: 'white', justifyContent: 'right' }} size="small" 
@@ -64,6 +66,7 @@ const Post = ({ post, setCurrentId }) => { {/* getting both the props from Posts
               {/* To edit the post we are setting the post id to current post id in both post and 
                 form component, since setCurrentId is passed to both form and post component */}
             </div> )}
+          
           <ButtonBase className={classes.cardAction} onClick={openPost}>
             <div className={classes.details}>
               <Typography variant='body2' color='textSecondary' component="h2">
@@ -84,6 +87,8 @@ const Post = ({ post, setCurrentId }) => { {/* getting both the props from Posts
                <Likes />
             </Button>
           )}
+
+          {/* show the delete button only if the post is created by the current logged-In user */}
           {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
             <Button size='small' color='primary' onClick={() => dispatch(deletePost(post._id))}>
               {/* 
