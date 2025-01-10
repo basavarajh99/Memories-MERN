@@ -1,7 +1,7 @@
 import axios from "axios";
 
 /* axios used to make api calls */
-const API = axios.create({ baseURL: "http://localhost:5000" });
+const API = axios.create({ baseURL: "https://memories-mern-giqr.onrender.com" });
 
 //https://memories-mern-giqr.onrender.com
 
