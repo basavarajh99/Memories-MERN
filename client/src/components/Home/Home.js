@@ -5,12 +5,19 @@ import PagiNation from "../Pagination";
 import { getPosts, getPostsBySearch } from "../../actions/posts";
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
+
 import { useHistory, useLocation } from "react-router-dom";
+/*
+  useLocation: To determine on which page the user currently in.
+  useHistory: To renavigate the user to certain pages.
+*/
+
 import ChipInput from "material-ui-chip-input";
 import useStyles from "./styles";
 
-
-
+/*
+  URLSearchParams: To know user is on which page currently and what search term are we looking for.
+ */
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -26,15 +33,14 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
 
-  useEffect(() =>{
-    dispatch(getPosts());
-  }, [currentId, dispatch]);
-
-
   const searchPost = () => {
-    if(search.trim() || tags){
+    if (search.trim().length || tags.length){
+      
       dispatch(getPostsBySearch({ search, tags: tags.join(',') }));
+      /* we can't pass an array of tags inside a search query hence we join the tags to make it as a string */
+      
       history.push(`/posts/search?searchQuery=${search || "none"}&tags=${tags.join(',')}`)
+      //moving to specific URL after the seach is successfull.
     } else {
       history.push('/');
     }
@@ -48,49 +54,30 @@ const Home = () => {
   
   const handleAdd = (tag) => setTags([...tags, tag]);
 
-  const handleDelete = (tagToDelete) => setTags(tags.filter((tag) => tag !== tagToDelete));
+  const handleDelete = (tagToDelete) => {
+    setTags(tags.filter((tag) => tag !== tagToDelete));
+    history.push('/');
+  }
 
 
   return (
     <Grow in>
       <Container maxWidth="xl">
-        <Grid
-          className={classes.gridContainer}
-          container
-          justify="space-between"
-          alignItems="stretch"
-          spacing={3}
-        >
+        <Grid className={classes.gridContainer} container justify="space-between" alignItems="stretch" 
+          spacing={3}>
           <Grid item xs={12} sm={6} md={9}>
             <Posts setCurrentId={setCurrentId} />
-            {/*Sending the currentId and setCurrentId from parent component <Home/> to child component <Posts/>*/}
+            {/*Sending the currentId and setCurrentId from parent component <Home/> to child component 
+            <Posts/>*/}
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppBar
-              className={classes.appBarSearch}
-              position="static"
-              color="inherit"
-            >
-              <TextField
-                name="search"
-                variant="outlined"
-                label="Search Memories"
-                onKeyDown={handleKeyPress}
-                fullWidth
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <ChipInput 
-                style={{ margin: '10px 0' }}
-                value={tags}
-                onAdd={(chip) => handleAdd(chip)}
-                onDelete={(chip) => handleDelete(chip)}
-                label="Search Tags"
-                variant="outlined"
-              />
-              <Button onClick={searchPost} variant="contained" 
-                className={classes.searchButton} color="primary">
-                Search</Button>
+            <AppBar className={classes.appBarSearch} position="static" color="inherit">
+              <TextField name="search" variant="outlined" label="Search Memories" onKeyDown={handleKeyPress} 
+                fullWidth value={search} onChange={(e) => setSearch(e.target.value)} />
+              <ChipInput style={{ margin: '10px 0' }} value={tags} onAdd={(chip) => handleAdd(chip)} 
+                onDelete={(chip) => handleDelete(chip)} label="Search Tags" variant="outlined" />
+              <Button onClick={searchPost} variant="contained" className={classes.searchButton} color="primary"
+                >Search</Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
             {/* 

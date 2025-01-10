@@ -16,16 +16,11 @@ const Paginate = ({ page }) => {
     }
   }, [dispatch, page]);
 
+  /* this pagination component is used inside home component */
   return (
-    <Pagination
-      classes={{ ul: classes.ul }}
-      count={numberOfPages}
-      page={Number(page) || 1}
-      variant="outlined"
-      color="primary"
-      renderItem={(item) => (
-        <PaginationItem {...item} component={Link} to={`/posts?page=${item.page}`} />
-      )}
+    <Pagination classes={{ ul: classes.ul }} count={numberOfPages} page={Number(page) || 1} variant="outlined" 
+    color="primary" renderItem={(item) => ( <PaginationItem {...item} component={Link} 
+      to={`/posts?page=${item.page}`} /> )}
     />
   );
 };

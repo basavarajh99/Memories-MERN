@@ -38,10 +38,14 @@ export const getPosts = (page) => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING })
         const { data } = await api.fetchPosts(page);
-        
-        //console.log(data);
+        //passing the page to the backend to know which page we are on
         
         dispatch({ type: FETCH_ALL, payload: data });
+        /*
+            The payload now not just the posts but now contains an object that has 3 different things
+            it contains data of the posts, current page, and also the number of pages. 
+        */
+
         dispatch({ type: END_LOADING })
 
     } catch (error) {
@@ -105,8 +109,9 @@ export const commentPost = (value, id) => async (dispatch) => {
         const { data } = await api.comment(value, id);
 
         dispatch({ type: COMMENT, payload: data })
+        
         return data.comments;
-
+        
     } catch (error) {
         
         console.log(error);

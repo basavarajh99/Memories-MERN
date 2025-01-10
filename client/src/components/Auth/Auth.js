@@ -16,6 +16,7 @@ const Auth = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState(initialState);
   const history = useHistory();
@@ -53,6 +54,7 @@ const Auth = () => {
   */
 
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
+  const handleShowConfirmPassword = () => setShowConfirmPassword((prevConfirmShowPassword) => !prevConfirmShowPassword)
 
   /*
     Whenever you are changing the previous state based on old state then you need to pass a callback function
@@ -131,7 +133,7 @@ const Auth = () => {
             <Input name="password" label="Password" handleChange={handleChange} 
               type={showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword} />
               {isSignUp && <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} 
-                type="password" /> } 
+                type={showConfirmPassword ? 'text' : 'password'} handleShowConfirmPassword={handleShowConfirmPassword} /> } 
           </Grid>
           <Button type='submit' fullWidth variant="contained" color='primary' className={classes.submit} >
             {isSignUp ? 'Sign Up' : 'Sign In'}

@@ -10,12 +10,25 @@ import PostMessage from "../models/postMessage.js";
 export const getPosts = async  (req, res) => {
     const { page } = req.query;
     try {
+        const LIMIT = 8; // number of posts per page
+        
+        const startIndex = (Number(page) - 1) * LIMIT; 
+        /*
+            get start index of a post on a specific page
+            ex: 1st post on 3rd page = (8 + 8 + 8) - 1; because we start from 0
+            
+            Eventhough page is a number on the client side, it is converted as a string when it is passed 
+            inside an URL hence to convert it back to number use Number() constructor.
 
-        const LIMIT = 8;
-        const startIndex = (Number(page) - 1) * LIMIT; //get start index of every page
+        */
+        
         const total = await PostMessage.countDocuments({});
-        const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+        /* 
+            we need to count the total number of posts necause depending on this count we know what is the
+            last page number inside pagination.        
+        */ 
 
+        const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
         /*
             By using await, the code pauses at these lines until the Promises resolve, and then it proceeds 
             with the resolved values (total and posts).
@@ -24,8 +37,8 @@ export const getPosts = async  (req, res) => {
             resulting in nested or chained callbacks. async/await makes the code more readable and resembles 
             synchronous flow.
         */
-
         res.status(200).json({ data: posts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });
+    
     } catch(error) {
         res.status(404).json({message: error.message});
     }
@@ -42,11 +55,23 @@ export const getPost = async (req, res) => {
     }
 }
 
+/*
+    Search query: begins with a ‘?’ ex: /posts?page=1
+    Search params: begins with a ‘:’ ex: /posts/:id
+*/
+
 export const getPostsBySearch = async (req, res) => {
     const { searchQuery, tags } = req.query;
     try {
-        const title = new RegExp(searchQuery, 'i');
+        const title = new RegExp(searchQuery, 'i'); 
+        //'i' flag stands for ignore i.e, the case of searchQuery
         const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ] })
+        /*
+            $or: Either find by matching the title or the tag
+            $in: Is there at least one matching tag in the array of tags formed by splitting the strings on ','
+                 got inside search query.
+        */
+
         res.json({ data: posts });
     } catch (error) {
         res.status(404).json({message: error.message });

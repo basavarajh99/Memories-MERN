@@ -17,19 +17,12 @@ const Post = ({ post, setCurrentId }) => { {/* getting both the props from Posts
   const history = useHistory();
   const [likes, setLikes] = useState(post?.likes);
   
+  /*
+    Giving user a quick feedback to let him know that he has liked the post without wating for all the backend
+    stuff to happen i.e, dispatching an action, posting like inside DB, handling the reducers....
+  */
   const userId = user?.result.googleId || user?.result?._id;
-  const hasLiked = post?.likes?.find((like) => like === userId);
-
-  const handleClick = async () => {
-
-    dispatch(likePost(post._id))
-
-    if(hasLiked){
-      setLikes(post.likes.filter((id) => id !== userId))
-    } else{
-      setLikes([ ...post.likes, userId])
-    }
-  } 
+  const hasLiked = post?.likes?.find((like) => like === userId); //user has already liked the post or not
 
   const Likes = () => {
     if (likes.length > 0) {
@@ -43,6 +36,17 @@ const Post = ({ post, setCurrentId }) => { {/* getting both the props from Posts
     {/* the &nbsp adds space since JSX can't interprete normal space as blank space */}
     return <><ThumbUpAltOutlined fontSize="small" displ />&nbsp;Like</>;
   };
+
+  const handleClick = async () => {
+
+    dispatch(likePost(post._id))
+
+    if(hasLiked){ //disliking the like if user clicks like button for the second time
+      setLikes(post.likes.filter((id) => id !== userId))
+    } else{
+      setLikes([ ...post.likes, userId])
+    }
+  } 
     
   const openPost = () => {
     history.push(`/posts/${post._id}`);
@@ -69,7 +73,8 @@ const Post = ({ post, setCurrentId }) => { {/* getting both the props from Posts
           
           <ButtonBase className={classes.cardAction} onClick={openPost}>
             <div className={classes.details}>
-              <Typography variant='body2' color='textSecondary' component="h2">
+              <Typography variant='body2' color='textSecondary' component="h2"
+                style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',}}>
                 {post.tags.map((tag) => `#${tag} `)} 
                 {/* loop in the tags array and prefix each tag with '#' */}
               </Typography>
@@ -77,7 +82,8 @@ const Post = ({ post, setCurrentId }) => { {/* getting both the props from Posts
             <Typography className={classes.title} gutterBottom variant="h6" component="h2" >
               {post.title}</Typography>
             <CardContent>
-              <Typography variant='body2' color='textSecondary' component="p">{post.message}</Typography>
+              <Typography variant="body2" color="textSecondary" component="p" style={{ overflow: 'hidden',
+                textOverflow: 'ellipsis', whiteSpace: 'nowrap',}} gutterBottom >{post.message}</Typography>
             </CardContent>
         </ButtonBase>
 
@@ -90,14 +96,12 @@ const Post = ({ post, setCurrentId }) => { {/* getting both the props from Posts
 
           {/* show the delete button only if the post is created by the current logged-In user */}
           {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
-            <Button size='small' color='primary' onClick={() => dispatch(deletePost(post._id))}>
+            <Button size='small' color='secondary' onClick={() => dispatch(deletePost(post._id))}>
               {/* 
                   this onClick() dispatch deletePost action and the DELETE case inside reducer performs the
                   delete operation using filter() method.
                 */}
-              <DeleteIcon fontSize='small' />
-                Delete
-            </Button>
+              <DeleteIcon fontSize='small' />Delete</Button>
           )}
         </CardActions>
     </Card>

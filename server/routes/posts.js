@@ -47,5 +47,4 @@ router.post('/:id/commentPost', auth, commentPost);
     The importing file does not need to use curly braces {} when importing this export. 
     It can assign any name to the imported value.
 */
-
 export default router;

@@ -40,12 +40,12 @@ const Navbar = () => {
 
     return (
     <AppBar className={classes.appBar} position='static' color='inherit'>
-        <div className={classes.brandContainer}>
+        <Link to="" className={classes.brandContainer}>
           <img src={memoriesText} style={{cursor: "pointer"}} onClick={() => history.push('/')} 
             alt='icon' height='45px'  />
           <img className={classes.image} style={{cursor: "pointer"}} onClick={() => history.push('/')} 
             src={memoriesLogo} alt="icon" height="40px" />
-        </div>
+        </Link>
         <Toolbar className={classes.toolbar}>
             {
                 user ? (

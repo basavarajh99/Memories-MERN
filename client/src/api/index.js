@@ -1,7 +1,7 @@
 import axios from "axios";
 
 /* axios used to make api calls */
-const API = axios.create({ baseURL: "https://memories-mern-giqr.onrender.com" });
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
 //https://memories-mern-giqr.onrender.com
 
@@ -27,7 +27,8 @@ export const fetchPost = (id) => API.get(`/posts/${id}`);
 export const fetchPostsBySearch = (searchQuery) =>
   API.get(
     `/posts/search?searchQuery=${searchQuery.search || "none"}&tags=${searchQuery.tags}`
-  );
+  ); /* query params start with a '?' following it a variable name which is used to search for a 
+      specific post by value entered in search text field or in tags field */
 
 export const createPost = (newPost) => API.post("/posts", newPost);
 
@@ -42,6 +43,7 @@ export const deletePost = (id) => API.delete(`/posts/${id}`);
 export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
 
 export const comment = (value, id) => API.post(`/posts/${id}/commentPost`, { value });
+//id inside req.params and value which is a comment as payload inside req.body
 
 export const signIn = (formData) => API.post("/user/signin", formData);
 

@@ -26,6 +26,10 @@ const Posts = ({setCurrentId}) => {
       <Grid className={classes.mainContainer} container alignItems='stretch' spacing={3}>
         {posts.map((post) => (
           <Grid key={post.id} item xs={12} sm={12} md={6} lg={3} >
+            {/* 
+              how many posts are shown per page xs=12 means on extra small devices only 1 post same for small
+              for medium 2 posts and for large screens 4 posts.
+            */}
             <Post post={post} setCurrentId={setCurrentId} /> 
             {/* 
                 Parent component <Home /> Passes the {setCurrentId} prop to the child component <Posts />.
